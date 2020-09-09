@@ -1,0 +1,34 @@
+.root {
+    -fx-text-fill: white;
+}
+.ctf {
+    -fx-text-fill: white;
+}
+.chart-horizontal-grid-lines {
+    -fx-stroke: transparent;
+}
+.chart-vertical-grid-lines {
+    -fx-stroke: transparent;
+}
+.chart-plot-background {
+    -fx-background-color: transparent;
+}
+.axis:top {
+    -fx-border-color: transparent;
+}
+.axis:left {
+    -fx-stroke-color: skyblue;
+}
+.axis:right {
+    -fx-border-color: transparent;
+    -fx-stroke: transparent;
+}
+.axis:bottom {
+    -fx-stroke-color: skyblue;
+    -fx-font-weight: normal;
+}
+.chart-title {
+    -fx-text-fill: skyblue;
+    -fx-font-weight: 800;
+}
+.default-color0.chart-series-line { -fx-stroke: white; }

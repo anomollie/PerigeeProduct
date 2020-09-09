@@ -66,7 +66,7 @@ public class InfoWindow extends GridPane{
         Text te = new Text("PERIGEE");
         te.setFont(Font.font("Ariel", FontWeight.EXTRA_BOLD, 50));
         te.setFill(Color.web("0x048194"));
-        ImagePattern i = new ImagePattern(new Image(new FileInputStream("src\\logo.png")));
+        ImagePattern i = new ImagePattern(new Image(new FileInputStream("Java13\\src\\logo.png")));
         Rectangle r = new Rectangle(0, 0, 100, 100);
         r.setFill(i);
         h3.getChildren().add(te);
