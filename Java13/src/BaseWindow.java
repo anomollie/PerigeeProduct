@@ -14,9 +14,9 @@ public class BaseWindow extends GridPane {
         this.setHgap(10);
         this.setVgap(10);
         this.setPadding(new Insets(0, 10, 10, 10));
-        this.setGridLinesVisible(true);
+        this.setGridLinesVisible(false);
         RowConstraints rcon = new RowConstraints();
-        this.setBackground(new Background(new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY)));
+        this.setBackground(new Background(new BackgroundFill(Color.web("0x262262"), CornerRadii.EMPTY, Insets.EMPTY)));
         InfoWindow topBar = new InfoWindow(1278, 125, false);
         InfoWindow leftMid = new InfoWindow(368, 141, true);
         InfoWindow midMid = new InfoWindow(498, 280, true);

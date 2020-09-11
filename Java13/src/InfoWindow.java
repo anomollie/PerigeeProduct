@@ -3,17 +3,20 @@ import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.Side;
+import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
-import javafx.scene.shape.Arc;
-import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.*;
 import javafx.scene.text.*;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.controlsfx.control.textfield.CustomTextField;
 import org.controlsfx.glyphfont.Glyph;
@@ -34,16 +37,16 @@ public class InfoWindow extends GridPane{
     public InfoWindow(double width, double height, boolean stroke) {
         this.setPrefSize(width, height);
         this.setMaxHeight(height);
-        this.setBackground(new Background(new BackgroundFill(Color.BLACK, new CornerRadii(5), Insets.EMPTY)));
+        this.setBackground(new Background(new BackgroundFill(Color.web("0x262262"), new CornerRadii(5), Insets.EMPTY)));
         if (stroke) {
-            this.setBorder(new Border(new BorderStroke(Color.web("0x18CAE6"), BorderStrokeStyle.SOLID, new CornerRadii(5), new BorderWidths(2, 2, 2, 2))));
+            this.setBorder(new Border(new BorderStroke(Color.web("0x48C4F2"), BorderStrokeStyle.SOLID, new CornerRadii(5), new BorderWidths(2, 2, 2, 2))));
         }
 //        this.setFill(Color.BLACK);
 //        this.setArcHeight(10);
 //        this.setArcWidth(10);
 //        this.setSt
 //        if (stroke) {
-//            this.setStroke(Color.web("0x18CAE6"));
+//            this.setStroke(Color.web("0x48C4F2"));
 //            this.setStrokeWidth(2);
 //        }
     }
@@ -63,18 +66,19 @@ public class InfoWindow extends GridPane{
         HBox h = new HBox();
         HBox h2 = new HBox();
         HBox h3 = new HBox();
-        Text te = new Text("PERIGEE");
-        te.setFont(Font.font("Ariel", FontWeight.EXTRA_BOLD, 50));
-        te.setFill(Color.web("0x048194"));
-        ImagePattern i = new ImagePattern(new Image(new FileInputStream("Java13\\src\\logo.png")));
-        Rectangle r = new Rectangle(0, 0, 100, 100);
+//        Text te = new Text("PERIGEE");
+//        te.setFont(Font.font("Ariel", FontWeight.EXTRA_BOLD, 50));
+//        te.setFill(Color.web("0x048194"));
+        ImagePattern i = new ImagePattern(new Image(new FileInputStream("Java13\\src\\pp.png")));
+        Ellipse r = new Ellipse(0, 0, 104.57, 53.86);
+        r.setTranslateY(6.5);
         r.setFill(i);
-        h3.getChildren().add(te);
+//        h3.getChildren().add(te);
         h3.getChildren().add(r);
         Text text = new Text("HVAC FAN");
         text.setFont(Font.font("Ariel", FontWeight.EXTRA_BOLD, 50));
         text.setFill(Color.WHITE);
-        t.setBackground(new Background(new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY)));
+        t.setBackground(new Background(new BackgroundFill(Color.web("0x262262"), CornerRadii.EMPTY, Insets.EMPTY)));
         t.setBorder(new Border(new BorderStroke(Color.WHITE, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(0, 0, 3, 0))));
         t.setPromptText("Search for a device");
         t.setPrefSize(350, 50);
@@ -91,9 +95,11 @@ public class InfoWindow extends GridPane{
         h.setAlignment(Pos.CENTER);
         h2.setAlignment(Pos.CENTER_RIGHT);
         h3.setAlignment(Pos.CENTER_LEFT);
+        h.setTranslateX(40);
         HBox.setMargin(h, new Insets(0, 100, 0, 100));
         HBox.setMargin(h2, new Insets(0, 10, 0, 100));
         HBox.setMargin(h3, new Insets(0, 100, 0, 10));
+        hh.setTranslateY(-10);
 
 //        this.add(h, 0, 0);
 //        this.add(h2, 1, 0);
@@ -112,26 +118,26 @@ public class InfoWindow extends GridPane{
         t3.setFont(Font.font("Ariel", FontWeight.EXTRA_BOLD, 20));
         t4.setFont(Font.font("Ariel", FontWeight.EXTRA_BOLD, 20));
         t5.setFont(Font.font("Ariel", FontWeight.EXTRA_BOLD, 20));
-        t.setFill(Color.web("0x18CAE6"));
-        t2.setFill(Color.web("0x18CAE6"));
-        t3.setFill(Color.web("0x18CAE6"));
-        t4.setFill(Color.web("0x18CAE6"));
-        t5.setFill(Color.web("0x18CAE6"));
+        t.setFill(Color.web("0x48C4F2"));
+        t2.setFill(Color.web("0x48C4F2"));
+        t3.setFill(Color.web("0x48C4F2"));
+        t4.setFill(Color.web("0x48C4F2"));
+        t5.setFill(Color.web("0x48C4F2"));
         Text tt = new Text("60");
-        Text tt2 = new Text("MONNIT");
-        Text tt3 = new Text("10.234.0.0.132");
-        Text tt4 = new Text("00:0A:95:9D:68:16");
-        Text tt5 = new Text("FLOOR 6, WEST WING");
+        Text tt2 = new Text("ESPRESSIF");
+        Text tt3 = new Text("192.168.68.42");
+        Text tt4 = new Text("10:52:1C:CF:BB:74");
+        Text tt5 = new Text("BEDROOM, 3RD FLOOR");
         tt.setFont(Font.font("Ariel", FontWeight.EXTRA_BOLD, 20));
         tt2.setFont(Font.font("Ariel", FontWeight.EXTRA_BOLD, 20));
         tt3.setFont(Font.font("Ariel", FontWeight.EXTRA_BOLD, 20));
         tt4.setFont(Font.font("Ariel", FontWeight.EXTRA_BOLD, 20));
         tt5.setFont(Font.font("Ariel", FontWeight.EXTRA_BOLD, 20));
-        tt.setFill(Color.web("0xFCBA03"));
-        tt2.setFill(Color.web("0xFCBA03"));
-        tt3.setFill(Color.web("0xFCBA03"));
-        tt4.setFill(Color.web("0xFCBA03"));
-        tt5.setFill(Color.web("0xFCBA03"));
+        tt.setFill(Color.WHITE);
+        tt2.setFill(Color.WHITE);
+        tt3.setFill(Color.WHITE);
+        tt4.setFill(Color.WHITE);
+        tt5.setFill(Color.WHITE);
         TextFlow tf = new TextFlow(t, tt);
         TextFlow tf2 = new TextFlow(t2, tt2);
         TextFlow tf3 = new TextFlow(t3, tt3);
@@ -161,33 +167,34 @@ public class InfoWindow extends GridPane{
     public void makeRightMid() {
         StackPane sp = new StackPane();
         Arc rarc = new Arc(0, 0, 120, 120, 90, -360);
-        rarc.setStroke(Color.web("0xFCBA03"));
-        rarc.setStrokeWidth(9);
+        rarc.setStroke(Color.web("0xed1c23"));
+        rarc.setStrokeWidth(12);
         rarc.setFill(Color.TRANSPARENT);
         //this.add(rarc, 0, 0);
         this.setAlignment(Pos.CENTER);
-        Arc garc = new Arc(0, 0, 120, 120, 90, -300);
-        garc.setStroke(Color.web("0x10CAE6"));
-        garc.setStrokeWidth(10);
+        Arc garc = new Arc(0, 0, 120, 120, 90, -328.68);
+        garc.setStroke(Color.web("0x32cd32"));
+        garc.setStrokeWidth(12);
         garc.setFill(Color.TRANSPARENT);
         Text n = new Text();
         DecimalFormat d = new DecimalFormat("0.0");
         String temp = d.format(Math.abs(garc.getLength()/360)*100) + "%";
         n.setText(temp);
         n.setFont(Font.font("Ariel", FontWeight.EXTRA_BOLD, 50));
-        n.setFill(Color.web("0x10CAE6"));
+        n.setFill(Color.web("0x48C4F2"));
         n.setX(garc.getCenterX() - garc.getRadiusX()/2);
         n.setY(garc.getCenterY() + garc.getRadiusY()/8);
         n.setManaged(false);
         Text n2 = new Text("DEVICE HYGIENE");
         n2.setFont(Font.font("Ariel", FontWeight.EXTRA_BOLD, 20));
-        n2.setFill(Color.SKYBLUE);
-        n2.setTranslateX(garc.getCenterX() - garc.getRadiusX()/1.75);
+        n2.setFill(Color.web("0x48c4f2"));
+        n2.setTranslateX(garc.getCenterX() - garc.getRadiusX()/1.6);
         n2.setTranslateY(garc.getCenterY() + garc.getRadiusY()/3);
         n2.setManaged(false);
+        n.setTranslateX(-5);
 //        Text t = new Text("AVERAGE DEVICE HYGIENE SCORE");
 //        t.setFont(Font.font("Ariel", FontWeight.EXTRA_BOLD, 15));
-//        t.setFill(Color.web("0x10CAE6"));
+//        t.setFill(Color.web("0x48C4F2"));
 //        t.setWrappingWidth(100);
 //        t.setX(0);
 //        t.setY(200);
@@ -228,12 +235,12 @@ public class InfoWindow extends GridPane{
             else {
                 transition.stop();
             }
-            if (Math.abs(garc.getLength()/360*100) < 50) {
-                n.setFill(Color.web("0xFCBA03"));
-            }
-            else {
-                n.setFill(Color.web("0x10CAE6"));
-            }
+//            if (Math.abs(garc.getLength()/360*100) < 50) {
+//                n.setFill(Color.web("0xed1c23"));
+//            }
+//            else {
+//                n.setFill(Color.web("0x48C4F2"));
+//            }
             n.setText(temp2);
         });
     }
@@ -248,24 +255,55 @@ public class InfoWindow extends GridPane{
         return (double) a2.get(t2);
     }
     public void makeMidMid() {
+        VBox v = new VBox();
+        HBox h = new HBox();
+        Glyph g = new Glyph("FontAwesome", "EXPAND");
+        g.setColor(Color.WHITE);
+        g.setFontSize(15);
+        final int size = 30;
         CategoryAxis x = new CategoryAxis();
         NumberAxis y = new NumberAxis();
+        CategoryAxis fullx = new CategoryAxis();
+        NumberAxis fully = new NumberAxis();
+
         y.setUpperBound(100.0);
         y.setLowerBound(0.0);
         y.setAutoRanging(false);
-        x.setBorder(new Border(new BorderStroke(Color.web("0x10CAE6"), BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(3, 0, 0, 0))));
-        x.setTickLabelFill(Color.web("0xFCBA03"));
-        y.setBorder(new Border(new BorderStroke(Color.web("0x10CAE6"), BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(0, 3, 0, 0))));
-        y.setTickLabelFill(Color.web("0xFCBA03"));
-        x.setTickLabelFont(Font.font("Ariel", FontWeight.BOLD, 15));
-        y.setTickLabelFont(Font.font("Ariel", FontWeight.EXTRA_BOLD, 15));
+        x.setBorder(new Border(new BorderStroke(Color.web("0x48C4F2"), BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(3, 0, 0, 0))));
+        x.setTickLabelFill(Color.WHITE);
+        y.setBorder(new Border(new BorderStroke(Color.web("0x48C4F2"), BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(0, 3, 0, 0))));
+        y.setTickLabelFill(Color.WHITE);
+        x.setTickLabelFont(Font.font("Ariel", FontWeight.BOLD, 13));
+        y.setTickLabelFont(Font.font("Ariel", FontWeight.EXTRA_BOLD, 13));
         y.setMinorTickCount(0);
         y.setTickUnit(1000);
         x.setAutoRanging(true);
+
+        fully.setUpperBound(100.0);
+        fully.setLowerBound(0.0);
+        fully.setAutoRanging(false);
+        fullx.setBorder(new Border(new BorderStroke(Color.web("0x48C4F2"), BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(3, 0, 0, 0))));
+        fullx.setTickLabelFill(Color.WHITE);
+        fully.setBorder(new Border(new BorderStroke(Color.web("0x48C4F2"), BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(0, 3, 0, 0))));
+        fully.setTickLabelFill(Color.WHITE);
+        fullx.setTickLabelFont(Font.font("Ariel", FontWeight.BOLD, 13));
+        fully.setTickLabelFont(Font.font("Ariel", FontWeight.EXTRA_BOLD, 13));
+        fully.setMinorTickCount(0);
+        fully.setTickUnit(1000);
+        fullx.setAutoRanging(true);
+
         LineChart c = new LineChart(x, y);
+        LineChart fullchart = new LineChart(fullx, fully);
+        fullchart.setAnimated(false);
         c.setAnimated(false);
         XYChart.Series<String, Number> series = new XYChart.Series<>();
+        XYChart.Series<String, Number> fullseries = new XYChart.Series<>();
+        fullchart.getData().add(fullseries);
         c.getData().add(series);
+        x.setLabel("Time: HH:MM:SS");
+        y.setLabel("% Availability");
+        fullx.setLabel("Time: HH:MM:SS");
+        fully.setLabel("% Availability");
         final SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
         ScheduledExecutorService ses = Executors.newSingleThreadScheduledExecutor();
         ses.scheduleAtFixedRate(() -> {
@@ -273,18 +311,51 @@ public class InfoWindow extends GridPane{
                 double random = getValue2();
                 Date now = new Date();
                 series.getData().add(new XYChart.Data<String, Number>(sdf.format(now), random));
+                fullseries.getData().add(new XYChart.Data<>(sdf.format(now), random));
+                if (series.getData().size() > size) {
+                    series.getData().remove(0);
+                }
             });
         }, 0, 1, TimeUnit.SECONDS);
+        Node line = series.getNode().lookup(".chart-series-line");
+        Node fullline = fullseries.getNode().lookup(".chart-series-line");
+        fullline.setStyle("-fx-stroke-width: 7;");
+        line.setStyle("-fx-stroke-width: 7;");
+        fullchart.setCreateSymbols(false);
+        fullchart.setLegendVisible(false);
+        fullchart.setTitle("DEVICE AVAILABILITY");
+        fullchart.setTitleSide(Side.BOTTOM);
+        fullchart.setStyle("-fx-text-fill: 0x48C4F2");
+        fullchart.setPrefSize(600, 300);
+        fullchart.setStyle("-fx-fill: transparent");
+        fullchart.setStyle("-fx-stroke: tranparent");
+        fullchart.setTranslateX(-10);
+        fullchart.getXAxis().lookup(".axis-label").setStyle("-fx-label-padding: 0 0 -10 0");
 
         c.setCreateSymbols(false);
         c.setLegendVisible(false);
         c.setTitle("DEVICE AVAILABILITY");
         c.setTitleSide(Side.BOTTOM);
-        c.setStyle("-fx-text-fill: 0x10CAE6");
+        c.setStyle("-fx-text-fill: 0x48C4F2");
         c.setPrefSize(600, 300);
         c.setStyle("-fx-fill: transparent");
         c.setStyle("-fx-stroke: tranparent");
-        this.add(c, 0, 0);
+        c.setTranslateX(-10);
+        c.getXAxis().lookup(".axis-label").setStyle("-fx-label-padding: 0 0 -10 0");
+        c.setPadding(new Insets(0, 0, -5, 0));
+        Stage s = new Stage();
+        HBox layout = new HBox(10);
+        layout.setStyle("-fx-background-color: #262262; -fx-padding: 10;");
+        layout.getChildren().add(fullchart);
+        Scene ss = new Scene(layout);
+        ss.getStylesheets().add("style.css");
+        s.setScene(ss);
+        g.setOnMouseClicked(e -> s.show());
+        h.getChildren().add(g);
+        h.setAlignment(Pos.CENTER_RIGHT);
+        v.getChildren().add(h);
+        v.getChildren().add(c);
+        this.add(v, 0, 0);
         this.setAlignment(Pos.CENTER);
         this.setPadding(new Insets(5, 5, 5, 5));
     }
@@ -293,11 +364,16 @@ public class InfoWindow extends GridPane{
         return this.getBorder();
     }
     private Border getR() {
-        this.setBorder(new Border(new BorderStroke(Color.web("0x10CAE6"), BorderStrokeStyle.SOLID, new CornerRadii(5), new BorderWidths(2, 2, 2, 2))));
+        this.setBorder(new Border(new BorderStroke(Color.web("0x48C4F2"), BorderStrokeStyle.SOLID, new CornerRadii(5), new BorderWidths(2, 2, 2, 2))));
         return this.getBorder();
     }
     public void makeMidBot() {
         final int size = 30;
+        VBox v = new VBox();
+        HBox h = new HBox();
+        Glyph g = new Glyph("FontAwesome", "EXPAND");
+        g.setColor(Color.WHITE);
+        g.setFontSize(15);
         Transition tra = new Transition() {
             {
                 setCycleDuration(Duration.seconds(3));
@@ -315,17 +391,37 @@ public class InfoWindow extends GridPane{
         };
         CategoryAxis x = new CategoryAxis();
         NumberAxis y = new NumberAxis();
-        x.setBorder(new Border(new BorderStroke(Color.web("0x10CAE6"), BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(3, 0, 0, 0))));
-        x.setTickLabelFill(Color.web("0xFCBA03"));
-        y.setBorder(new Border(new BorderStroke(Color.web("0x10CAE6"), BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(0, 3, 0, 0))));
-        y.setTickLabelFill(Color.web("0xFCBA03"));
-        x.setTickLabelFont(Font.font("Ariel", FontWeight.BOLD, 15));
-        y.setTickLabelFont(Font.font("Ariel", FontWeight.EXTRA_BOLD, 15));
+        CategoryAxis fullx = new CategoryAxis();
+        NumberAxis fully = new NumberAxis();
+        x.setLabel("Time: HH:MM:SS");
+        y.setLabel("Time Delta");
+        x.setBorder(new Border(new BorderStroke(Color.web("0x48C4F2"), BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(3, 0, 0, 0))));
+        x.setTickLabelFill(Color.WHITE);
+        y.setBorder(new Border(new BorderStroke(Color.web("0x48C4F2"), BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(0, 3, 0, 0))));
+        y.setTickLabelFill(Color.WHITE);
+        x.setTickLabelFont(Font.font("Ariel", FontWeight.BOLD, 13));
+        y.setTickLabelFont(Font.font("Ariel", FontWeight.EXTRA_BOLD, 13));
         y.setMinorTickCount(0);
         y.setTickUnit(1000);
+
+        fullx.setBorder(new Border(new BorderStroke(Color.web("0x48C4F2"), BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(3, 0, 0, 0))));
+        fullx.setTickLabelFill(Color.WHITE);
+        fully.setBorder(new Border(new BorderStroke(Color.web("0x48C4F2"), BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(0, 3, 0, 0))));
+        fully.setTickLabelFill(Color.WHITE);
+        fullx.setTickLabelFont(Font.font("Ariel", FontWeight.BOLD, 13));
+        fully.setTickLabelFont(Font.font("Ariel", FontWeight.EXTRA_BOLD, 13));
+        fully.setMinorTickCount(0);
+        fully.setTickUnit(1000);
+
         LineChart c = new LineChart(x, y);
+        LineChart fullchart = new LineChart(fullx, fully);
+        fullchart.setAnimated(false);
         c.setAnimated(false);
         XYChart.Series<String, Number> series = new XYChart.Series<>();
+        XYChart.Series<String, Number> fullseries = new XYChart.Series<>();
+        fullchart.getData().add(fullseries);
+        fullx.setLabel("Time: HH:MM:SS");
+        fully.setLabel("Time Delta");
         c.getData().add(series);
         final SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
         ScheduledExecutorService ses = Executors.newSingleThreadScheduledExecutor();
@@ -336,6 +432,7 @@ public class InfoWindow extends GridPane{
                 double random = getValue();
                 Date now = new Date();
                 series.getData().add(new XYChart.Data<String, Number>(sdf.format(now), random));
+                fullseries.getData().add(new XYChart.Data<>(sdf.format(now), random));
                 if (series.getData().size() > size) {
                     series.getData().remove(0);
                 }
@@ -345,15 +442,45 @@ public class InfoWindow extends GridPane{
             });
         }, 0, 1, TimeUnit.SECONDS);
 
+        fullchart.setCreateSymbols(false);
+        fullchart.setLegendVisible(false);
+        fullchart.setTitle("PACKET TRANSMISSION");
+        fullchart.setTitleSide(Side.BOTTOM);
+        fullchart.setStyle("-fx-text-fill: 0x48C4F2");
+        fullchart.setPrefSize(600, 300);
+        fullchart.setStyle("-fx-fill: transparent");
+        fullchart.setStyle("-fx-stroke: tranparent");
+        fullchart.setTranslateX(-10);
+        fullchart.getXAxis().lookup(".axis-label").setStyle("-fx-label-padding: 0 0 -10 0");
+        fullchart.setPrefSize(this.getPrefWidth()*2, this.getPrefHeight()*2);
+        fullchart.setMaxSize(this.getPrefWidth()*2, this.getPrefHeight()*2);
+
         c.setCreateSymbols(false);
         c.setLegendVisible(false);
         c.setTitle("PACKET TRANSMISSION");
         c.setTitleSide(Side.BOTTOM);
-        c.setStyle("-fx-text-fill: 0x10CAE6");
+        c.setStyle("-fx-text-fill: 0x48C4F2");
         c.setPrefSize(600, 300);
         c.setStyle("-fx-fill: transparent");
         c.setStyle("-fx-stroke: tranparent");
-        this.add(c, 0, 0);
+        c.setPrefSize(this.getPrefWidth()*2, this.getPrefHeight()*2);
+        c.setMaxSize(this.getPrefWidth()*2, this.getPrefHeight()*2);
+        c.setTranslateX(-10);
+        c.getXAxis().lookup(".axis-label").setStyle("-fx-label-padding: 0 0 -10 0");
+        c.setPadding(new Insets(0, 0, -5, 0));
+        Stage s = new Stage();
+        HBox layout = new HBox(10);
+        layout.setStyle("-fx-background-color: #262262; -fx-padding: 10;");
+        layout.getChildren().add(fullchart);
+        Scene ss = new Scene(layout);
+        ss.getStylesheets().add("style.css");
+        s.setScene(ss);
+        g.setOnMouseClicked(e -> s.show());
+        h.getChildren().add(g);
+        h.setAlignment(Pos.CENTER_RIGHT);
+        v.getChildren().add(h);
+        v.getChildren().add(c);
+        this.add(v, 0, 0);
         this.setAlignment(Pos.CENTER);
         this.setPadding(new Insets(5, 5, 5, 5));
     }
@@ -377,19 +504,20 @@ public class InfoWindow extends GridPane{
         Text tt = new Text(" TOTAL IN NETWORK");
         Text t2 = new Text("100%");
         Text tt2 = new Text(" CONFIGURATION DRIFT");
-        Text t3 = new Text("70%");
-        Text tt3 = new Text(" OF TOTAL TRAFFIC TO OUT OF NETWORK NODES");
+        Text t3 = new Text("22%");
+        Text tt3 = new Text(" TOTAL TRAFFIC TO OUT OF\n NETWORK NODES");
+        tt3.setTextAlignment(TextAlignment.JUSTIFY);
         Text t4 = new Text("4");
-        Text tt4 = new Text(" OTHER DEVICES ON NETWORK IT TALKS TO");
-        t.setFill(Color.web("0xFCBA03"));
-        t2.setFill(Color.web("0xFCBA03"));
-        t3.setFill(Color.web("0xFCBA03"));
-        t4.setFill(Color.web("0xFCBA03"));
-        tt.setFill(Color.web("0x18CAE6"));
-        tt2.setFill(Color.web("0x18CAE6"));
-        tt3.setFill(Color.web("0x18CAE6"));
-        tt4.setFill(Color.web("0x18CAE6"));
-        title.setFill(Color.SKYBLUE);
+        Text tt4 = new Text(" OTHER DEVICES ON\n NETWORK IT TALKS TO");
+        t.setFill(Color.WHITE);
+        t2.setFill(Color.WHITE);
+        t3.setFill(Color.WHITE);
+        t4.setFill(Color.WHITE);
+        tt.setFill(Color.web("0x48C4F2"));
+        tt2.setFill(Color.web("0x48C4F2"));
+        tt3.setFill(Color.web("0x48C4F2"));
+        tt4.setFill(Color.web("0x48C4F2"));
+        title.setFill(Color.web("0x48C4F2"));
         title.setFont(Font.font("Ariel", FontWeight.EXTRA_BOLD, 30));
         tt.setFont(Font.font("Ariel", FontWeight.BOLD, 20));
         tt2.setFont(Font.font("Ariel", FontWeight.BOLD, 20));
@@ -457,18 +585,25 @@ public class InfoWindow extends GridPane{
         Text ttt = new Text("SEE PATCH HISTORY");
         Text ttt2 = new Text("SEE PORTS AND PROTOCOL DECODE");
         Text ttt3 = new Text("SEE PORTS AND PROTOCOL DECODE");
+        ttt.setOnMousePressed(e -> ttt.setFill(Color.GRAY));
+        ttt.setOnMouseReleased(e -> ttt.setFill(Color.WHITE));
+        ttt2.setOnMousePressed(e -> ttt.setFill(Color.GRAY));
+        ttt2.setOnMouseReleased(e -> ttt.setFill(Color.WHITE));
+        ttt3.setOnMousePressed(e -> ttt.setFill(Color.GRAY));
+        ttt3.setOnMouseReleased(e -> ttt.setFill(Color.WHITE));
         ttt3.setUnderline(true);
-        ttt3.setFont(Font.font("Ariel", FontWeight.MEDIUM, 15));
+        ttt3.setFont(Font.font("Ariel", FontWeight.SEMI_BOLD, 15));
         ttt3.setFill(Color.WHITE);
         ttt2.setFill(Color.WHITE);
         ttt2.setUnderline(true);
-        ttt2.setFont(Font.font("Ariel", FontWeight.MEDIUM, 15));
+        ttt2.setFont(Font.font("Ariel", FontWeight.SEMI_BOLD, 15));
         ttt.setFill(Color.WHITE);
         ttt.setUnderline(true);
-        ttt.setFont(Font.font("Ariel", FontWeight.MEDIUM, 15));
-        Text t9 = new Text("12 FEBRUARY 2020 | 12:22:39 | [PATCH_INFO_HERE]");
-        Text t10 = new Text("24 FEBRUARY 2020 | 17:03:31 | [PATcH_INFO_HERE]");
+        ttt.setFont(Font.font("Ariel", FontWeight.SEMI_BOLD, 15));
+        Text t9 = new Text("02 SEPTEMBER 2020 | 06:01:39 | PASSWORD CHANGE");
+        Text t10 = new Text("04 SEPTEMBER 2020 | 01:32:31 | NETWORK UPDATE");
         t9.setFill(Color.WHITE);
+        t10.setTranslateX(-5);
         vbb.getChildren().add(t9);
         t10.setFill(Color.WHITE);
         vbb.getChildren().add(t10);
@@ -488,12 +623,15 @@ public class InfoWindow extends GridPane{
         vbb.setAlignment(Pos.CENTER);
         h5.getChildren().add(ttt);
         h5.setAlignment(Pos.CENTER);
+        h5.setTranslateX(-25);
         h6.getChildren().add(ttt2);
         h6.setAlignment(Pos.CENTER);
+        h6.setTranslateX(29);
         ttt2.setOnMouseClicked(e -> addOrRemoveInfo2(vb2, vbb2));
         vbb2.setAlignment(Pos.CENTER);
         vbb3.setAlignment(Pos.CENTER);
         h7.setAlignment(Pos.CENTER);
+        h7.setTranslateX(29);
         h7.getChildren().add(ttt3);
         ttt3.setOnMouseClicked(e -> addOrRemoveInfo3(vb3, vbb3));
         h.getChildren().add(v);
@@ -515,8 +653,8 @@ public class InfoWindow extends GridPane{
         vv.setSpacing(10);
         v.setSpacing(25);
         v2.setSpacing(25);
-        vv.setAlignment(Pos.CENTER);
-        this.setPadding(new Insets(0, 0, 0, 5));
+        vv.setAlignment(Pos.TOP_LEFT);
+        this.setPadding(new Insets(0, 0, 0, 10));
         this.setHgap(5);
         this.setVgap(7);
         this.add(vv, 0, 0);
@@ -563,28 +701,108 @@ public class InfoWindow extends GridPane{
     }
 
     public void makeRightBot() {
-        Text t = new Text("PRIORITY");
-        Text t2 = new Text("LOW");
-        Text t3 = new Text("CVE released buffer overflow issue on Smiths Medical Medfusion 4000 Wireless Syringe Infusion Pump");
-        t.setFont(Font.font("Ariel", FontWeight.EXTRA_BOLD, 35));
-        t2.setFont(Font.font("Ariel", FontWeight.EXTRA_BOLD, 25));
-        t3.setFont(Font.font("Ariel", FontWeight.MEDIUM, 20));
-        t.setFill(Color.web("0x10CAE6"));
-        t2.setFill(Color.web("0xFCBA03"));
-        t3.setFill(Color.WHITE);
-        t3.setWrappingWidth(this.getPrefWidth()*.75);
-        VBox v = new VBox();
-        v.setAlignment(Pos.CENTER);
-        t.setTextAlignment(TextAlignment.CENTER);
-        t2.setTextAlignment(TextAlignment.CENTER);
-        t3.setTextAlignment(TextAlignment.CENTER);
-        v.setSpacing(15);
-        v.getChildren().add(t);
-        v.getChildren().add(t2);
-        v.getChildren().add(t3);
+//        Text t = new Text("PRIORITY");
+//        Text t2 = new Text("LOW");
+//        Text t3 = new Text("CVE released buffer overflow issue on Smiths Medical Medfusion 4000 Wireless Syringe Infusion Pump");
+//        t.setFont(Font.font("Ariel", FontWeight.EXTRA_BOLD, 35));
+//        t2.setFont(Font.font("Ariel", FontWeight.EXTRA_BOLD, 25));
+//        t3.setFont(Font.font("Ariel", FontWeight.MEDIUM, 20));
+//        t.setFill(Color.web("0x48C4F2"));
+//        t2.setFill(Color.WHITE);
+//        t3.setFill(Color.WHITE);
+//        t3.setWrappingWidth(this.getPrefWidth()*.75);
+//        VBox v = new VBox();
+//        v.setAlignment(Pos.CENTER);
+//        t.setTextAlignment(TextAlignment.CENTER);
+//        t2.setTextAlignment(TextAlignment.CENTER);
+//        t3.setTextAlignment(TextAlignment.CENTER);
+//        v.setSpacing(15);
+//        v.getChildren().add(t);
+//        v.getChildren().add(t2);
+//        v.getChildren().add(t3);
+//        VBox text = new VBox();
+//        Text t = new Text("PRIORITY: MEDIUM");
+//        t.setUnderline(true);
+//        t.setFont(Font.font("Ariel", FontWeight.BOLD, 30));
+//        t.setFill(Color.web("0x48C4F2"));
+//        Text t2 = new Text("Identified CVE 2018-6692. Recommend switching network from high-priority assets.");
+//        t2.setFont(Font.font("Ariel", FontWeight.SEMI_BOLD, 20));
+//        t2.setFill(Color.WHITE);
+//        t2.setWrappingWidth(this.getPrefWidth()*.6);
+//        text.setAlignment(Pos.CENTER);
+//        text.setSpacing(25);
+//        text.getChildren().add(t);
+//        text.getChildren().add(t2);
+//        text.setTranslateY(-37);
+//        Line l1 = new Line(0, 50, -20, 30);
+//        Line l2 = new Line(0, 10, -20, 30);
+//        l1.setStroke(Color.WHITE);
+//        l2.setStroke(Color.WHITE);
+//        l1.setStrokeWidth(3);
+//        l2.setStrokeWidth(3);
+//        Pane arrow1 = new Pane();
+//        arrow1.getChildren().add(l1);
+//        arrow1.getChildren().add(l2);
+//        Line l3 = new Line(0, 50, 20, 30);
+//        Line l4 = new Line(0, 10, 20, 30);
+//        l3.setStroke(Color.WHITE);
+//        l4.setStroke(Color.WHITE);
+//        l3.setStrokeWidth(3);
+//        l4.setStrokeWidth(3);
+//        Pane arrow2 = new Pane();
+//        arrow2.getChildren().add(l3);
+//        arrow2.getChildren().add(l4);
+//        BorderPane p = new BorderPane();
+//        p.setPrefSize(this.getPrefWidth(), this.getPrefHeight());
+//        p.setMaxSize(this.getPrefWidth(), this.getPrefHeight());
+//        arrow1.setTranslateX(30);
+//        arrow1.setTranslateY(90);
+//        arrow2.setTranslateX(-15);
+//        arrow2.setTranslateY(90);
+//        p.setLeft(arrow1);
+//        p.setRight(arrow2);
+//
+//        p.setCenter(text);
+//        HBox circlebox = new HBox();
+//        p.getLeft().setOnMouseClicked(e -> scrollLeft(circlebox.getChildren().get(0), circlebox.getChildren().get(1), circlebox.getChildren().get(2), p));
+//        //p.getRight().setOnMouseClicked(e -> scrollRight());
+//        Circle c1 = new Circle(0, 0, 5, Color.WHITE);
+//        Circle c2 = new Circle(0, 0, 10, Color.TRANSPARENT);
+//        Circle c3 = new Circle(0, 0, 5, Color.WHITE);
+//        c2.setStroke(Color.WHITE);
+//        c1.setStroke(Color.WHITE);
+//        c3.setStroke(Color.WHITE);
+//        c2.setStrokeWidth(3);
+//        c1.setStrokeWidth(3);
+//        c3.setStrokeWidth(3);
+//        circlebox.getChildren().add(c1);
+//        circlebox.getChildren().add(c2);
+//        circlebox.getChildren().add(c3);
+//        circlebox.setSpacing(10);
+//        circlebox.setAlignment(Pos.CENTER);
+//        circlebox.setTranslateX(-6);
+//        circlebox.setPadding(new Insets(5, 5, 5, 5));
+////        p.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(5, 5, 5, 5))));
+//        p.setBottom(circlebox);
+//        p.setPadding(new Insets(5, 5, 5, 5));
+        Ticker t = new Ticker(this.getPrefWidth(), this.getPrefHeight());
+//        circlebox.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(5, 5, 5, 5))));
+        this.add(t, 0, 0);
         this.setPadding(new Insets(0, 0, 0, 10));
-        this.setAlignment(Pos.CENTER);
-        this.add(v, 0, 0);
+        this.setAlignment(Pos.BOTTOM_CENTER);
+//        this.add(v, 0, 0);
+    }
+
+    private void scrollLeft(Node s1, Node s2, Node s3, BorderPane n) {
+        Circle t = (Circle) s1;
+        Circle t2 = (Circle) s2;
+        Circle t3 = (Circle) s3;
+        t.setFill(Color.TRANSPARENT);
+        t.setRadius(10);
+        t2.setFill(Color.WHITE);
+        t2.setRadius(5);
+
+
     }
 
 }
