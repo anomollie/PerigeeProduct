@@ -9,6 +9,7 @@ import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
+import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
@@ -33,6 +34,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 public class InfoWindow extends GridPane{
+    private ImageView homeImage = new ImageView(new Image("/home.png"));
 
     public InfoWindow(double width, double height, boolean stroke) {
         this.setPrefSize(width, height);
@@ -52,17 +54,18 @@ public class InfoWindow extends GridPane{
     }
 
     public void addTextField() throws FileNotFoundException {
-        CustomTextField t = new CustomTextField();
-        Glyph g = new Glyph("FontAwesome", "SEARCH");
-        t.setLeft(g);
-
-        g.setColor(Color.WHITE);
-        g.setFontSize(35);
-        t.getLeft().setLayoutX(t.getLayoutX() - 20);
-        t.setFont(Font.font("Ariel", 20));
-        t.setId("ctf");
-        t.setStyle("-fx-text-fill: white");
-        t.setStyle("-fx-prompt-text-fill: white;");
+//        CustomTextField t = new CustomTextField();
+//        Glyph g = new Glyph("FontAwesome", "SEARCH");
+//        t.setLeft(g);
+//
+//        g.setColor(Color.WHITE);
+//        g.setFontSize(35);
+//        t.getLeft().setLayoutX(t.getLayoutX() - 20);
+//        t.setFont(Font.font("Ariel", 20));
+//        t.setId("ctf");
+//        t.setStyle("-fx-text-fill: white");
+//        t.setStyle("-fx-prompt-text-fill: white;");
+        Button homeButton = new Button("", homeImage);
         HBox h = new HBox();
         HBox h2 = new HBox();
         HBox h3 = new HBox();
@@ -78,12 +81,14 @@ public class InfoWindow extends GridPane{
         Text text = new Text("HVAC FAN");
         text.setFont(Font.font("Ariel", FontWeight.EXTRA_BOLD, 50));
         text.setFill(Color.WHITE);
-        t.setBackground(new Background(new BackgroundFill(Color.web("0x262262"), CornerRadii.EMPTY, Insets.EMPTY)));
-        t.setBorder(new Border(new BorderStroke(Color.WHITE, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(0, 0, 3, 0))));
-        t.setPromptText("Search for a device");
-        t.setPrefSize(350, 50);
+//        t.setBackground(new Background(new BackgroundFill(Color.web("0x262262"), CornerRadii.EMPTY, Insets.EMPTY)));
+//        t.setBorder(new Border(new BorderStroke(Color.WHITE, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(0, 0, 3, 0))));
+//        t.setPromptText("Search for a device");
+//        t.setPrefSize(350, 50);
         h.getChildren().add(text);
-        h2.getChildren().add(t);
+//        h2.getChildren().add(t);
+//        h2.getChildren().add(homeButton);
+//        h2.setAlignment(Pos.CENTER_RIGHT);
         h.setPadding(new Insets(0, 0, 0, 30));
         this.setHgap(630);
         this.setAlignment(Pos.BOTTOM_LEFT);
@@ -93,11 +98,11 @@ public class InfoWindow extends GridPane{
         hh.getChildren().add(h2);
         hh.setAlignment(Pos.CENTER);
         h.setAlignment(Pos.CENTER);
-        h2.setAlignment(Pos.CENTER_RIGHT);
+//        h2.setAlignment(Pos.CENTER_RIGHT);
         h3.setAlignment(Pos.CENTER_LEFT);
         h.setTranslateX(40);
         HBox.setMargin(h, new Insets(0, 100, 0, 100));
-        HBox.setMargin(h2, new Insets(0, 10, 0, 100));
+//        HBox.setMargin(h2, new Insets(0, 10, 0, 100));
         HBox.setMargin(h3, new Insets(0, 100, 0, 10));
         hh.setTranslateY(-10);
 
@@ -804,5 +809,9 @@ public class InfoWindow extends GridPane{
 
 
     }
+
+//    private void addHomeButtonFunction(Button homeButton, Stage applicationStage){
+//        homeButton.setOnMouseClicked(e -> applicationStage.setScene(overviewScene));
+//    }
 
 }

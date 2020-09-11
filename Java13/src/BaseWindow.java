@@ -3,6 +3,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.VPos;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.stage.Stage;
 
 import java.io.FileNotFoundException;
 
