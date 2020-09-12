@@ -426,8 +426,8 @@ public class Main extends Application {
                             e.printStackTrace();
                         }
                         appStage.setScene(deviceScene);
-//                        row.getItem().setLastThreatDate("09/12/2020");
-//                        updateLastThreatBlocked();
+                        row.getItem().setLastThreatDate("09/12/2020");
+                        updateLastThreatBlocked();
                     }
                 });
                 highlightRows.addListener((ListChangeListener<Integer>) change -> {
