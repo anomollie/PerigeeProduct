@@ -196,4 +196,7 @@
     -fx-background-radius: 50px;
 }
 
+.highlightedRow {
+    -fx-background-color: red;
+}
 

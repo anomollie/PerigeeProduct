@@ -1,9 +1,13 @@
 import javafx.application.Application;
 import javafx.beans.Observable;
+import javafx.beans.binding.Bindings;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.SortedList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -26,6 +30,7 @@ import javafx.stage.StageStyle;
 import javafx.util.Callback;
 
 import java.text.DecimalFormat;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,12 +43,12 @@ public class Main extends Application {
     private TableView table = new TableView();
     private Map<String, ObservableList> networkMap = new HashMap<>();
     private ObservableList<Device> deviceList = FXCollections.observableArrayList(
-            new Device("HVAC Fan 1 - Office", "216.58.216.163", "Room 1",1.0, 4.0,"09/17/2020"),
-            new Device("HVAC Fan 3 - Cafe", "216.58.216.162","Room 3",2.0,4.0,   "09/06/2020"),
-            new Device("Security Door", "216.58.216.162","North Wing Entrance",2.0,  4.0, "09/06/2020"),
-            new Device("Cooling System 1", "216.58.216.162","Room 3",2.0,4.0,   "09/06/2020"),
-            new Device("Key Card Reader", "216.58.216.162","Room 3",2.0,4.0,   "09/06/2020"),
-            new Device("HVAC Fan 6", "216.58.216.162","Room 3",2.0,  4.0, "09/06/2020")
+            new Device("HVAC Fan 1 - Office", "216.58.216.163", "Room 1",99.0, 100.0,"09/17/2020"),
+            new Device("HVAC Fan 3 - Cafe", "216.58.216.162","Room 3",52.0,94.0,   "09/06/2020"),
+            new Device("Security Door", "216.58.216.162","North Wing Entrance",100.0,  86.0, "09/06/2020"),
+            new Device("Cooling System 1", "216.58.216.162","Room 3",91.0,100.0,   "09/06/2020"),
+            new Device("Key Card Reader", "216.58.216.162","Room 3",82.0,84.0,   "09/06/2020"),
+            new Device("HVAC Fan 6", "216.58.216.162","Room 3",87.0,  74.0, "09/06/2020")
     );
     private ObservableList<Device> southWingDevices = FXCollections.observableArrayList();
     private ObservableList<String> networkList = FXCollections.observableArrayList(
@@ -75,6 +80,11 @@ public class Main extends Application {
     private GridPane outerGridPane = new GridPane();
     private GridPane innerGridPane = new GridPane();
     private BaseWindow deviceRoot;
+    private Stage deviceStage;
+    private GridPane topMenu;
+    private HBox rightMenu;
+    private HBox leftMenu;
+
 
 
     @Override
@@ -107,14 +117,13 @@ public class Main extends Application {
 
         VBox tableVBox = new VBox();
         tableVBox.setId("tableVBox");
-        setUpTableColumns();
-        populateTableColumns();
+
 
 
         //TopMenu Items
-        GridPane topMenu = new GridPane();
-        HBox leftMenu = new HBox();
-        HBox rightMenu = new HBox();
+        topMenu = new GridPane();
+        leftMenu = new HBox();
+        rightMenu = new HBox();
         Label companyName = new Label(companyString);
         topMenu.setId("topMenu");
         leftMenu.setId("leftMenu");
@@ -156,6 +165,9 @@ public class Main extends Application {
         overviewScene.setOnKeyPressed(e -> handleKeyInput(e.getCode(), primaryStage));
         deviceScene.setOnKeyPressed(e -> handleKeyInput(e.getCode(), primaryStage));
         switchNetworks();
+
+        setUpTableColumns();
+        populateTableColumns();
         primaryStage.show();
     }
     public void drag(Stage stage, double x, double y) {
@@ -198,8 +210,9 @@ public class Main extends Application {
 
     private void addButtonFunctions(Button minimize, Button exit, Stage applicationStage){
         minimize.setOnMouseClicked(e -> applicationStage.setIconified(true));
-        Stage stage = (Stage) exitButton.getScene().getWindow();
-        exit.setOnMouseClicked(e -> stage.close());
+        exit.setOnMouseClicked(e -> deviceStage.close());
+        exit.setOnMouseClicked(e -> applicationStage.close());
+
     }
 
 
@@ -218,17 +231,18 @@ public class Main extends Application {
             stage.setScene(overviewScene);
         }
         if (code == KeyCode.S){
-//            for(int i = 0; i < deviceList.size(); i++){
-//                deviceList.get(i).increaseDeviceAvailability(1);
-//            }
             deviceList.get(1).increaseDeviceAvailability(1);
             table.refresh();
         }
+        if (code == KeyCode.R){
+            deviceList.get(1).increaseDeviceAvailability(-1);
+            table.refresh();
+        }
         if (code == KeyCode.A){
-            wholeSortedList.add(new Device("HVAC North", "123:13:1424", "North Building", 2.0, 4.0,"01/12/20"));
+            wholeSortedList.add(new Device("HVAC North", "123:13:1424", "North Building", 75.0, 4.0,"01/12/20"));
         }
         for(int i = 0; i < deviceList.size(); i++){
-            if(deviceList.get(i).getDeviceAvailability() > 100){
+            if(deviceList.get(i).getDeviceAvailability() < 20){
                 Alert a = new Alert(Alert.AlertType.WARNING);
                 a.setContentText(deviceList.get(i).getDeviceName() + " is under threat!");
                 a.show();
@@ -270,7 +284,7 @@ public class Main extends Application {
     }
 
     private void populateTableColumns(){
-        Device southDevice = new Device("HVAC Fan 2", "216.58.216.164","Room 2" ,4.0,4.0, "8/03/2020");
+        Device southDevice = new Device("HVAC Fan 2", "216.58.216.164","Room 2" ,74.0,4.0, "8/03/2020");
         deviceList.add(southDevice);
         southWingDevices.add(southDevice);
         Callback<Device, Observable[]> cb =(Device device) -> new Observable[]{
@@ -281,13 +295,61 @@ public class Main extends Application {
         wholeSortedList = new SortedList<>( test,
                 (Device stock1, Device stock2) -> {
                     if( stock1.getDeviceAvailability() < stock2.getDeviceAvailability() ) {
-                        return 1;
-                    } else if( stock1.getDeviceAvailability() > stock2.getDeviceAvailability() ) {
                         return -1;
+                    } else if( stock1.getDeviceAvailability() > stock2.getDeviceAvailability() ) {
+                        return 1;
                     } else {
                         return 0;
                     }
                 });
+        final ObservableList<Integer> highlightRows = FXCollections.observableArrayList();
+        table.setRowFactory(new Callback<TableView<Device>, TableRow<Device>>() {
+            @Override
+            public TableRow<Device> call(TableView<Device> tableView) {
+                final TableRow<Device> row = new TableRow<Device>() {
+                    @Override
+                    protected void updateItem(Device device, boolean empty){
+                        super.updateItem(device, empty);
+                        if (highlightRows.contains(getIndex())) {
+                            if (! getStyleClass().contains("highlightedRow")) {
+                                getStyleClass().add("highlightedRow");
+                            }
+                        } else {
+                            getStyleClass().removeAll(Collections.singleton("highlightedRow"));
+                        }
+                    }
+                };
+                highlightRows.addListener((ListChangeListener<Integer>) change -> {
+                    if (highlightRows.contains(row.getIndex())) {
+                        if (! row.getStyleClass().contains("highlightedRow")) {
+                            row.getStyleClass().add("highlightedRow");
+                        }
+                    } else {
+                        row.getStyleClass().removeAll(Collections.singleton("highlightedRow"));
+                    }
+                });
+                return row;
+            }
+        });
+
+        final Button btnHighlight = new Button("Highlight");
+        btnHighlight.disableProperty().bind(Bindings.isEmpty(table.getSelectionModel().getSelectedIndices()));
+        btnHighlight.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                highlightRows.setAll(table.getSelectionModel().getSelectedIndices());
+            }
+        });
+
+        final Button btnClearHighlight = new Button("Clear Highlights");
+        btnClearHighlight.disableProperty().bind(Bindings.isEmpty(highlightRows));
+        btnClearHighlight.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                highlightRows.clear();
+            }
+        });
+        rightMenu.getChildren().addAll(btnHighlight, btnClearHighlight);
         SortedList<Device> southSortedList = new SortedList<>(southWingDevices);
         networkMap.put("Whole Hospital", wholeSortedList);
         networkMap.put("South Wing", southSortedList);

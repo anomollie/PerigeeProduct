@@ -240,7 +240,7 @@ public class InfoWindow extends GridPane{
             else {
                 transition.stop();
             }
-//            if (Math.abs(garc.getLength()/360*100) < 50) {
+//            if (Math.abs(garc.getLeorg.controlsfx:controlsfx:11.0.2ngth()/360*100) < 50) {
 //                n.setFill(Color.web("0xed1c23"));
 //            }
 //            else {
