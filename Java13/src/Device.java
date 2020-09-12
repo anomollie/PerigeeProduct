@@ -59,6 +59,10 @@ public class Device {
     public String getLastThreatBlockedDate() {
         return lastThreatBlockedDate.get();
     }
+    public void setLastThreatDate(String newDate) {
+        this.lastThreatBlockedDate.setValue(newDate);
+    }
+
 
     public void increaseDeviceAvailability(int increment) {
         double newDeviceAvailability = this.deviceAvailability.getValue() + increment;
