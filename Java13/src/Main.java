@@ -241,16 +241,6 @@ public class Main extends Application {
         }
     }
 
-    public void drag(Stage stage, double x, double y) {
-        stage.setX(x - offsetX);
-        stage.setY(y - offsetY);
-    }
-    public void close(KeyCode key, Stage primaryStage) {
-        if (key == KeyCode.ESCAPE) {
-            primaryStage.close();
-        }
-    }
-
     private void makeScreenMovable(Stage applicationStage){
         root.setOnMousePressed(event -> {
             xOffset = event.getSceneX();
@@ -285,7 +275,6 @@ public class Main extends Application {
         exit.setOnMouseClicked(e -> applicationStage.close());
 
     }
-
 
     private void handleKeyInput(KeyCode code, Stage stage){
         if (code == KeyCode.D){
