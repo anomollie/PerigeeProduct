@@ -10,7 +10,7 @@ import java.io.FileNotFoundException;
 
 public class BaseWindow extends GridPane {
 
-    public BaseWindow(Stage stage, Scene s) throws FileNotFoundException {
+    public BaseWindow(Stage stage, Scene s, Device device) throws FileNotFoundException {
         this.setWidth(1280);
         this.setHeight(720);
         this.setHgap(10);
@@ -19,13 +19,13 @@ public class BaseWindow extends GridPane {
         this.setGridLinesVisible(false);
         RowConstraints rcon = new RowConstraints();
         this.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
-        InfoWindow topBar = new InfoWindow(1278, 125, false);
-        InfoWindow leftMid = new InfoWindow(368, 141, true);
-        InfoWindow midMid = new InfoWindow(498, 280, true);
-        InfoWindow rightMid = new InfoWindow(368, 280, true);
-        InfoWindow leftBot = new InfoWindow(368, 421, true);
-        InfoWindow midBot = new InfoWindow(498, 280, true);
-        InfoWindow rightBot = new InfoWindow(368, 280, true);
+        InfoWindow topBar = new InfoWindow(device, 1278, 125, false);
+        InfoWindow leftMid = new InfoWindow(device,368, 141, true);
+        InfoWindow midMid = new InfoWindow(device,498, 280, true);
+        InfoWindow rightMid = new InfoWindow(device,368, 280, true);
+        InfoWindow leftBot = new InfoWindow(device,368, 421, true);
+        InfoWindow midBot = new InfoWindow(device,498, 280, true);
+        InfoWindow rightBot = new InfoWindow(device,368, 280, true);
 //        leftMid.setMaxHeight(141);
 //        leftBot.setMaxHeight(421);
         this.add(topBar, 0, 0, 3, 1);

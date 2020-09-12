@@ -37,6 +37,7 @@ import javafx.util.Callback;
 import javafx.util.Duration;
 
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -128,7 +129,7 @@ public class Main extends Application {
         primaryStage.setScene(overviewScene);
         primaryStage.initStyle(StageStyle.TRANSPARENT);
         primaryStage.setTitle("Table View Sample");
-        deviceRoot = new BaseWindow(primaryStage, overviewScene);
+        deviceRoot = new BaseWindow(primaryStage, overviewScene, deviceList.get(0));
         primaryStage.setTitle("IOT Example");
         deviceScene = new Scene(deviceRoot, 1280, 720);
         deviceScene.getStylesheets().add("style.css");
@@ -418,7 +419,15 @@ public class Main extends Application {
                 };
                 row.setOnMouseClicked(event -> {
                     if (event.getClickCount() == 2 && (! row.isEmpty()) ) {
+                        try {
+                            BaseWindow newBaseWindow = new BaseWindow(appStage, overviewScene, row.getItem());
+                            deviceScene.setRoot(newBaseWindow);
+                        } catch (FileNotFoundException e) {
+                            e.printStackTrace();
+                        }
                         appStage.setScene(deviceScene);
+//                        row.getItem().setLastThreatDate("09/12/2020");
+//                        updateLastThreatBlocked();
                     }
                 });
                 highlightRows.addListener((ListChangeListener<Integer>) change -> {

@@ -34,8 +34,10 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 public class InfoWindow extends GridPane{
+    private Device device;
 
-    public InfoWindow(double width, double height, boolean stroke) {
+    public InfoWindow(Device dev, double width, double height, boolean stroke) {
+        device = dev;
         this.setPrefSize(width, height);
         this.setMaxHeight(height);
         this.setBackground(new Background(new BackgroundFill(Color.web("0x262262"), new CornerRadii(5), Insets.EMPTY)));
@@ -85,7 +87,8 @@ public class InfoWindow extends GridPane{
 //        h3.getChildren().add(te);
 //        h3.getChildren().add(r);
         h3.getChildren().add(iv);
-        Text text = new Text("HVAC FAN");
+//        Text text = new Text(device.getDeviceName());
+        Text text = new Text("HVAC Fan");
         text.setFont(Font.font("Ariel", FontWeight.EXTRA_BOLD, 50));
         text.setFill(Color.web("0x262262"));
         t.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
@@ -139,7 +142,7 @@ public class InfoWindow extends GridPane{
         Text tt2 = new Text("ESPRESSIF");
         Text tt3 = new Text("192.168.68.42");
         Text tt4 = new Text("10:52:1C:CF:BB:74");
-        Text tt5 = new Text("BEDROOM, 3RD FLOOR");
+        Text tt5 = new Text(device.getDeviceLocation());
         tt.setFont(Font.font("Ariel", FontWeight.EXTRA_BOLD, 20));
         tt2.setFont(Font.font("Ariel", FontWeight.EXTRA_BOLD, 20));
         tt3.setFont(Font.font("Ariel", FontWeight.EXTRA_BOLD, 20));
@@ -184,7 +187,7 @@ public class InfoWindow extends GridPane{
         rarc.setFill(Color.TRANSPARENT);
         //this.add(rarc, 0, 0);
         this.setAlignment(Pos.CENTER);
-        Arc garc = new Arc(0, 0, 120, 120, 90, -328.68);
+        Arc garc = new Arc(0, 0, 120, 120, 90, -360.0 * device.getDeviceHygiene()/100.0);
         garc.setStroke(Color.web("0x32cd32"));
         garc.setStrokeWidth(12);
         garc.setFill(Color.TRANSPARENT);
