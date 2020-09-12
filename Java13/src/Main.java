@@ -1,3 +1,5 @@
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.beans.Observable;
 import javafx.beans.binding.Bindings;
@@ -18,6 +20,8 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -30,13 +34,13 @@ import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Callback;
+import javafx.util.Duration;
 
 import java.io.FileInputStream;
 import java.text.DecimalFormat;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 public class Main extends Application {
 
@@ -46,7 +50,7 @@ public class Main extends Application {
     private TableView table = new TableView();
     private Map<String, ObservableList> networkMap = new HashMap<>();
     private ObservableList<Device> deviceList = FXCollections.observableArrayList(
-            new Device("HVAC Fan 1 - Office", "216.58.216.163", "Room 1",99.0, 100.0,"09/17/2020"),
+            new Device("HVAC Fan 1 - Office", "216.58.216.163", "Room 1",99.0, 100.0,"09/10/2020"),
             new Device("HVAC Fan 3 - Cafe", "216.58.216.162","Room 3",52.0,94.0,   "09/06/2020"),
             new Device("Security Door", "216.58.216.162","North Wing Entrance",100.0,  86.0, "09/06/2020"),
             new Device("Cooling System 1", "216.58.216.162","Room 3",91.0,100.0,   "09/06/2020"),
@@ -84,15 +88,30 @@ public class Main extends Application {
     private GridPane innerGridPane = new GridPane();
     private BaseWindow deviceRoot;
     private Stage deviceStage;
+    private Stage appStage;
     private GridPane topMenu;
     private HBox rightMenu;
     private HBox leftMenu;
+
+    private static final int FRAMES_PER_SECOND = 60;
+    private static final int MILLISECOND_DELAY = 10000 / FRAMES_PER_SECOND;
+    private static final double SECOND_DELAY = 1.0 / FRAMES_PER_SECOND;
+
+    private Arc dhArc1;
+    private Arc dhArc2;
+    private Arc daArc1;
+    private Arc daArc2;
+    private Text v;
+    private Text n;
+    private String lastThreatBlockedDate = "04/23/2020";
+    private SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+    private Text g2;
 
 
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-
+        appStage = primaryStage;
 //        root.setOnMouseClicked(e -> {
 //            offsetX = e.getSceneX();
 //            offsetY = e.getSceneY();
@@ -185,14 +204,77 @@ public class Main extends Application {
 
         setUpTableColumns();
         populateTableColumns();
+        setupTimeline();
         primaryStage.show();
     }
-    public void drag(Stage stage, double x, double y) {
-        stage.setX(x - offsetX);
-        stage.setY(y - offsetY);
-    }
-    public void close(KeyCode key, Stage primaryStage) {
 
+    private void setupTimeline(){
+        KeyFrame frame = new KeyFrame(Duration.millis(MILLISECOND_DELAY), e ->
+        {
+            try {
+                step(); }
+            catch (Exception ex) {
+                ex.printStackTrace();} });
+        Timeline animation = new Timeline();
+        animation.setCycleCount(Timeline.INDEFINITE);
+        animation.getKeyFrames().add(frame);
+        animation.play();
+    }
+    private void step() throws Exception {
+//        randomAvailabilityChange();
+        changeAggregateGraphs();
+        updateLastThreatBlocked();
+    }
+
+    private void updateLastThreatBlocked() throws ParseException {
+        for(int i = 0; i < deviceList.size(); i++){
+            if(sdf.parse(deviceList.get(i).getLastThreatBlockedDate()).after(sdf.parse(lastThreatBlockedDate))){
+                lastThreatBlockedDate = deviceList.get(i).getLastThreatBlockedDate();
+            }
+        }
+        g2.setText(lastThreatBlockedDate);
+
+    }
+
+    private void changeAggregateGraphs(){
+        double aggregateAvailability = calculateAggregateAvailability(wholeSortedList);
+        double aggregateHygiene = calculateAggregateHygiene(wholeSortedList);
+        daArc2.setLength(aggregateAvailability/100.0 * -360);
+        dhArc2.setLength(aggregateHygiene/100.0 * -360);
+        DecimalFormat d = new DecimalFormat("0.0");
+        String temp = d.format(Math.abs(daArc2.getLength()/360)*100) + "%";
+        n.setText(temp);
+        n.setFont(Font.font("Ariel", FontWeight.EXTRA_BOLD, 50));
+        n.setFill(Color.web("0x48C4F2"));
+        n.setX(daArc2.getCenterX() - daArc2.getRadiusX()/1.8);
+        n.setY(daArc2.getCenterY() - daArc2.getRadiusY()/4);
+        n.setManaged(false);
+
+        DecimalFormat d1 = new DecimalFormat("0.0");
+        String temp1 = d1.format(Math.abs(dhArc2.getLength()/360)*100) + "%";
+        v.setText(temp1);
+        v.setFont(Font.font("Ariel", FontWeight.EXTRA_BOLD, 50));
+        v.setFill(Color.web("0x48C4F2"));
+        v.setX(dhArc2.getCenterX() - dhArc2.getRadiusX()/1.8);
+        v.setY(dhArc2.getCenterY() - dhArc2.getRadiusY()/4);
+        v.setManaged(false);
+    }
+
+    private void randomAvailabilityChange(){
+        for(int i = 0; i < deviceList.size(); i++){
+            double probability = Math.random();
+            int increment;
+            if(probability < 0.33){
+                increment = -1;
+            }
+            else if(probability > 0.33 && probability <0.66){
+                increment = 0;
+            }
+            else{
+                increment = 1;
+            }
+            deviceList.get(i).increaseDeviceAvailability(increment);
+        }
     }
 
     private void makeScreenMovable(Stage applicationStage){
@@ -230,13 +312,12 @@ public class Main extends Application {
 
     }
 
-
     private void handleKeyInput(KeyCode code, Stage stage){
         if (code == KeyCode.D){
 //            for(int i = 0; i < deviceList.size(); i++){
 //                deviceList.get(i).increaseDeviceAvailability(1);
 //            }
-            deviceList.get(0).increaseDeviceAvailability(1);
+            deviceList.get(1).increaseDeviceAvailability(1);
             table.refresh();
         }
         if (code == KeyCode.Q){
@@ -246,26 +327,25 @@ public class Main extends Application {
             stage.setScene(overviewScene);
         }
         if (code == KeyCode.S){
-            deviceList.get(1).increaseDeviceAvailability(1);
+            deviceList.get(0).increaseDeviceAvailability(1);
             table.refresh();
         }
         if (code == KeyCode.R){
-            deviceList.get(1).increaseDeviceAvailability(-1);
+            deviceList.get(0).increaseDeviceAvailability(-1);
             table.refresh();
         }
-        if (code == KeyCode.A){
-            wholeSortedList.add(new Device("HVAC North", "123:13:1424", "North Building", 75.0, 4.0,"01/12/20"));
+        if (code == KeyCode.T){
+            deviceList.get(0).setLastThreatDate("09/12/2020");
+            table.refresh();
         }
         if (code == KeyCode.ESCAPE) {
             stage.close();
         }
-        for(int i = 0; i < deviceList.size(); i++){
-            if(deviceList.get(i).getDeviceAvailability() < 20){
-                Alert a = new Alert(Alert.AlertType.WARNING);
-                a.setContentText(deviceList.get(i).getDeviceName() + " is under threat!");
-                a.show();
-            }
-        }
+
+
+//        if (code == KeyCode.A){
+//            wholeSortedList.add(new Device("HVAC North", "123:13:1424", "North Building", 75.0, 4.0,"01/12/20"));
+//        }
     }
 
     private double calculateAggregateAvailability(List<Device> list){
@@ -279,7 +359,7 @@ public class Main extends Application {
     private double calculateAggregateHygiene(List<Device> list){
         double totalHygiene = 0;
         for(int i = 0; i < list.size(); i++){
-            totalHygiene += list.get(i).getDeviceAvailability();
+            totalHygiene += list.get(i).getDeviceHygiene();
         }
         return totalHygiene/list.size();
     }
@@ -328,21 +408,24 @@ public class Main extends Application {
                     @Override
                     protected void updateItem(Device device, boolean empty){
                         super.updateItem(device, empty);
-                        if (highlightRows.contains(getIndex())) {
-                            if (! getStyleClass().contains("highlightedRow")) {
-                                getStyleClass().add("highlightedRow");
-                            }
-                        } else {
+                        if(getItem() != null && getItem().getDeviceAvailability() < 20){
+                            getStyleClass().add("highlightedRow");
+                        }
+                        else if(getItem() != null && getItem().getDeviceAvailability() >= 20) {
                             getStyleClass().removeAll(Collections.singleton("highlightedRow"));
                         }
                     }
                 };
+                row.setOnMouseClicked(event -> {
+                    if (event.getClickCount() == 2 && (! row.isEmpty()) ) {
+                        appStage.setScene(deviceScene);
+                    }
+                });
                 highlightRows.addListener((ListChangeListener<Integer>) change -> {
-                    if (highlightRows.contains(row.getIndex())) {
-                        if (! row.getStyleClass().contains("highlightedRow")) {
-                            row.getStyleClass().add("highlightedRow");
-                        }
-                    } else {
+                    if(row.getItem() != null && row.getItem().getDeviceAvailability() < 20){
+                        row.getStyleClass().add("highlightedRow");
+                    }
+                    else if(row.getItem() != null && row.getItem().getDeviceAvailability() >= 20) {
                         row.getStyleClass().removeAll(Collections.singleton("highlightedRow"));
                     }
                 });
@@ -380,19 +463,20 @@ public class Main extends Application {
     }
 
     private void addAggregateFigures(HBox aggregateAvailability, HBox aggregateHygiene, HBox lastThreatBlocked){
-        Arc daArc1 = new Arc(200, 150, 120, 120, 90, -360);
+
+        daArc1 = new Arc(200, 150, 120, 120, 90, -360);
         daArc1.setStroke(Color.RED);
         daArc1.setStrokeWidth(9);
         daArc1.setFill(Color.TRANSPARENT);
 
-        Arc daArc2 = new Arc(200, 150, 120, 120, 90, -328.68);
+        daArc2 = new Arc(200, 150, 120, 120, 90, -328.68);
         daArc2.setStroke(Color.LIMEGREEN);
         daArc2.setStrokeWidth(10);
         daArc2.setFill(Color.TRANSPARENT);
         daArc1.setManaged(false);
         daArc2.setManaged(false);
 
-        Text n = new Text();
+        n = new Text();
         DecimalFormat d = new DecimalFormat("0.0");
         String temp = d.format(Math.abs(daArc2.getLength()/360)*100) + "%";
         n.setText(temp);
@@ -411,40 +495,40 @@ public class Main extends Application {
 
         aggregateAvailability.getChildren().addAll(daArc1, daArc2, n, n2);
 
-        Arc dhArc1 = new Arc(200, 150, 120, 120, 90, -360);
+        dhArc1 = new Arc(200, 150, 120, 120, 90, -360);
         dhArc1.setStroke(Color.RED);
         dhArc1.setStrokeWidth(9);
         dhArc1.setFill(Color.TRANSPARENT);
 
-        Arc dhArc2 = new Arc(200, 150, 120, 120, 90, -328.68);
+        dhArc2 = new Arc(200, 150, 120, 120, 90, -328.68);
         dhArc2.setStroke(Color.LIMEGREEN);
         dhArc2.setStrokeWidth(10);
         dhArc2.setFill(Color.TRANSPARENT);
         dhArc1.setManaged(false);
         dhArc2.setManaged(false);
 
-        Text v = new Text();
+        v = new Text();
         DecimalFormat s = new DecimalFormat("0.0");
-        String temp1 = s.format(Math.abs(daArc2.getLength()/360)*100) + "%";
+        String temp1 = s.format(Math.abs(dhArc2.getLength()/360)*100) + "%";
         v.setText(temp1);
         v.setFont(Font.font("Ariel", FontWeight.EXTRA_BOLD, 50));
         v.setFill(Color.WHITE);
-        v.setX(daArc2.getCenterX() - daArc2.getRadiusX()/1.8);
-        v.setY(daArc2.getCenterY() - daArc2.getRadiusY()/4);
+        v.setX(dhArc2.getCenterX() - dhArc2.getRadiusX()/1.8);
+        v.setY(dhArc2.getCenterY() - dhArc2.getRadiusY()/4);
         v.setManaged(false);
         Text v2 = new Text("AGGREGATE\nDEVICE HYGIENE");
         v2.setFont(Font.font("Ariel", FontWeight.EXTRA_BOLD, 20));
         v2.setFill(Color.web("0x48c4f2"))
         ;
         v2.setTextAlignment(TextAlignment.CENTER);
-        v2.setTranslateX(daArc2.getCenterX() - daArc2.getRadiusX()/1.5);
-        v2.setTranslateY(daArc2.getCenterY() + daArc2.getRadiusY()/8);
+        v2.setTranslateX(dhArc2.getCenterX() - dhArc2.getRadiusX()/1.5);
+        v2.setTranslateY(dhArc2.getCenterY() + dhArc2.getRadiusY()/8);
         v2.setManaged(false);
 
         aggregateHygiene.getChildren().addAll(dhArc1, dhArc2, v, v2);
         VBox g = new VBox();
         Text g1 = new Text("LAST DATE THREAT BLOCKED:");
-        Text g2 = new Text("09/10/2020");
+        g2 = new Text(lastThreatBlockedDate);
         g.getChildren().addAll(g1, g2);
         g1.setFont(Font.font("Ariel", FontWeight.EXTRA_BOLD, 30));
         g1.setFill(Color.web("0x48C4F2"));

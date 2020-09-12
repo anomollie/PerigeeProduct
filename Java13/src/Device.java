@@ -59,10 +59,21 @@ public class Device {
     public String getLastThreatBlockedDate() {
         return lastThreatBlockedDate.get();
     }
+    public void setLastThreatDate(String newDate) {
+        this.lastThreatBlockedDate.setValue(newDate);
+    }
 
-    public void increaseDeviceAvailability(int timeIncrement) {
-        this.deviceAvailability.setValue(this.deviceAvailability.getValue() + timeIncrement);
-        this.deviceAvailabilityDisplay.setValue(this.deviceAvailability.getValue() + percent);
+
+    public void increaseDeviceAvailability(int increment) {
+        double newDeviceAvailability = this.deviceAvailability.getValue() + increment;
+        if(newDeviceAvailability < 0.0){
+            newDeviceAvailability = 0.0;
+        }
+        else if(newDeviceAvailability > 100.0){
+            newDeviceAvailability = 100;
+        }
+        this.deviceAvailability.setValue(newDeviceAvailability);
+        this.deviceAvailabilityDisplay.setValue(newDeviceAvailability + percent);
     }
 
 
