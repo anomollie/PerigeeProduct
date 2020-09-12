@@ -52,16 +52,16 @@ public class Main extends Application {
     private SortedList<Device> wholeSortedList;
 
 
-    private TableColumn deviceNameCol = new TableColumn("Device Name");
-    private TableColumn ipAddressCol = new TableColumn("Device IP Address");
-    private TableColumn deviceLocationCol = new TableColumn("Device Location");
-    private TableColumn deviceAvailabilityDisplayCol = new TableColumn("Device Availability");
-    private TableColumn deviceHygieneDisplayCol = new TableColumn("Device Hygiene");
-    private TableColumn lastThreatDateCol = new TableColumn("Last Threat Blocked Date");
-    private ImageView exitImage = new ImageView(new Image("/exit.png"));
-    private ImageView minimizeImage = new ImageView(new Image("/minimize.png"));
-    private Button minimizeButton = new Button("", minimizeImage);
-    private Button exitButton = new Button("", exitImage);
+    private final TableColumn deviceNameCol = new TableColumn("Device Name");
+    private final TableColumn ipAddressCol = new TableColumn("Device IP Address");
+    private final TableColumn deviceLocationCol = new TableColumn("Device Location");
+    private final TableColumn deviceAvailabilityDisplayCol = new TableColumn("Device Availability");
+    private final TableColumn deviceHygieneDisplayCol = new TableColumn("Device Hygiene");
+    private final TableColumn lastThreatDateCol = new TableColumn("Last Threat Blocked Date");
+    private final ImageView exitImage = new ImageView(new Image("/exit.png"));
+    private final ImageView minimizeImage = new ImageView(new Image("/minimize.png"));
+    private final Button minimizeButton = new Button("", minimizeImage);
+    private final Button exitButton = new Button("", exitImage);
 
     private ComboBox comboBox;
     private Scene deviceScene;
@@ -198,7 +198,8 @@ public class Main extends Application {
 
     private void addButtonFunctions(Button minimize, Button exit, Stage applicationStage){
         minimize.setOnMouseClicked(e -> applicationStage.setIconified(true));
-        exit.setOnMouseClicked(e -> applicationStage.close());
+        Stage stage = (Stage) exitButton.getScene().getWindow();
+        exit.setOnMouseClicked(e -> stage.close());
     }
 
 
