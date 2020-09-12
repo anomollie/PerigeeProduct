@@ -8,6 +8,8 @@ import javafx.collections.ObservableList;
 import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -29,6 +31,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Callback;
 
+import java.io.FileInputStream;
 import java.text.DecimalFormat;
 import java.util.Collections;
 import java.util.HashMap;
@@ -89,10 +92,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        deviceRoot = new BaseWindow();
-        primaryStage.setTitle("IOT Example");
-        deviceScene = new Scene(deviceRoot, 1280, 720);
-        deviceScene.getStylesheets().add("style.css");
+
 //        root.setOnMouseClicked(e -> {
 //            offsetX = e.getSceneX();
 //            offsetY = e.getSceneY();
@@ -109,7 +109,10 @@ public class Main extends Application {
         primaryStage.setScene(overviewScene);
         primaryStage.initStyle(StageStyle.TRANSPARENT);
         primaryStage.setTitle("Table View Sample");
-
+        deviceRoot = new BaseWindow(primaryStage, overviewScene);
+        primaryStage.setTitle("IOT Example");
+        deviceScene = new Scene(deviceRoot, 1280, 720);
+        deviceScene.getStylesheets().add("style.css");
 
         //TableView Items
         Label tableLabel = new Label("Device List");
@@ -118,23 +121,37 @@ public class Main extends Application {
         VBox tableVBox = new VBox();
         tableVBox.setId("tableVBox");
 
-
+        Image i = new Image(new FileInputStream("Java13\\src\\Picture1.png"));
+        ImageView iv = new ImageView(i);
+        iv.setFitWidth(i.getWidth()*.7);
+        iv.setFitHeight(i.getHeight()*.7);
+        iv.setTranslateX(-8);
+        iv.setTranslateY(-8);
 
         //TopMenu Items
         topMenu = new GridPane();
         leftMenu = new HBox();
         rightMenu = new HBox();
+        leftMenu.getChildren().add(iv);
         Label companyName = new Label(companyString);
         topMenu.setId("topMenu");
         leftMenu.setId("leftMenu");
         rightMenu.setId("rightMenu");
         companyName.setId("companyName");
+        companyName.setTranslateX(180);
+//        companyName.setTranslateY(20);
+        rightMenu.setTranslateX(-50);
+
         comboBox = new ComboBox(networkList);
+//        comboBox.setTranslateX(500);
         comboBox.getSelectionModel().selectFirst();
         leftMenu.getChildren().add(companyName);
-        leftMenu.getChildren().add(comboBox);
+//        leftMenu.getChildren().add(comboBox);
+        rightMenu.getChildren().add(comboBox);
         topMenu.add(leftMenu, 0, 0, 1, 1);
         topMenu.add(rightMenu, 1, 0, 1, 1);
+        topMenu.setPadding(new Insets(10, 20, -20, 20));
+        companyName.setFont(Font.font("Ariel", FontWeight.EXTRA_BOLD, 50));
         rightMenu.getChildren().addAll(minimizeButton, exitButton);
         tableVBox.getChildren().addAll(tableLabel, table);
 
@@ -175,9 +192,7 @@ public class Main extends Application {
         stage.setY(y - offsetY);
     }
     public void close(KeyCode key, Stage primaryStage) {
-        if (key == KeyCode.ESCAPE) {
-            primaryStage.close();
-        }
+
     }
 
     private void makeScreenMovable(Stage applicationStage){
@@ -240,6 +255,9 @@ public class Main extends Application {
         }
         if (code == KeyCode.A){
             wholeSortedList.add(new Device("HVAC North", "123:13:1424", "North Building", 75.0, 4.0,"01/12/20"));
+        }
+        if (code == KeyCode.ESCAPE) {
+            stage.close();
         }
         for(int i = 0; i < deviceList.size(); i++){
             if(deviceList.get(i).getDeviceAvailability() < 20){
@@ -349,7 +367,7 @@ public class Main extends Application {
                 highlightRows.clear();
             }
         });
-        rightMenu.getChildren().addAll(btnHighlight, btnClearHighlight);
+//        rightMenu.getChildren().addAll(btnHighlight, btnClearHighlight);
         SortedList<Device> southSortedList = new SortedList<>(southWingDevices);
         networkMap.put("Whole Hospital", wholeSortedList);
         networkMap.put("South Wing", southSortedList);
@@ -362,14 +380,13 @@ public class Main extends Application {
     }
 
     private void addAggregateFigures(HBox aggregateAvailability, HBox aggregateHygiene, HBox lastThreatBlocked){
-
         Arc daArc1 = new Arc(200, 150, 120, 120, 90, -360);
-        daArc1.setStroke(Color.web("0xFCBA03"));
+        daArc1.setStroke(Color.RED);
         daArc1.setStrokeWidth(9);
         daArc1.setFill(Color.TRANSPARENT);
 
         Arc daArc2 = new Arc(200, 150, 120, 120, 90, -328.68);
-        daArc2.setStroke(Color.web("0x48C4F2"));
+        daArc2.setStroke(Color.LIMEGREEN);
         daArc2.setStrokeWidth(10);
         daArc2.setFill(Color.TRANSPARENT);
         daArc1.setManaged(false);
@@ -380,13 +397,13 @@ public class Main extends Application {
         String temp = d.format(Math.abs(daArc2.getLength()/360)*100) + "%";
         n.setText(temp);
         n.setFont(Font.font("Ariel", FontWeight.EXTRA_BOLD, 50));
-        n.setFill(Color.web("0x48C4F2"));
+        n.setFill(Color.WHITE);
         n.setX(daArc2.getCenterX() - daArc2.getRadiusX()/1.8);
         n.setY(daArc2.getCenterY() - daArc2.getRadiusY()/4);
         n.setManaged(false);
         Text n2 = new Text("AGGREGATE\nDEVICE AVAILABILITY");
         n2.setFont(Font.font("Ariel", FontWeight.EXTRA_BOLD, 20));
-        n2.setFill(Color.SKYBLUE);
+        n2.setFill(Color.web("0x48c4f2"));
         n2.setTextAlignment(TextAlignment.CENTER);
         n2.setTranslateX(daArc2.getCenterX() - daArc2.getRadiusX()/1.175);
         n2.setTranslateY(daArc2.getCenterY() + daArc2.getRadiusY()/8);
@@ -395,12 +412,12 @@ public class Main extends Application {
         aggregateAvailability.getChildren().addAll(daArc1, daArc2, n, n2);
 
         Arc dhArc1 = new Arc(200, 150, 120, 120, 90, -360);
-        dhArc1.setStroke(Color.web("0xFCBA03"));
+        dhArc1.setStroke(Color.RED);
         dhArc1.setStrokeWidth(9);
         dhArc1.setFill(Color.TRANSPARENT);
 
         Arc dhArc2 = new Arc(200, 150, 120, 120, 90, -328.68);
-        dhArc2.setStroke(Color.web("0x48C4F2"));
+        dhArc2.setStroke(Color.LIMEGREEN);
         dhArc2.setStrokeWidth(10);
         dhArc2.setFill(Color.TRANSPARENT);
         dhArc1.setManaged(false);
@@ -411,28 +428,39 @@ public class Main extends Application {
         String temp1 = s.format(Math.abs(daArc2.getLength()/360)*100) + "%";
         v.setText(temp1);
         v.setFont(Font.font("Ariel", FontWeight.EXTRA_BOLD, 50));
-        v.setFill(Color.web("0x48C4F2"));
+        v.setFill(Color.WHITE);
         v.setX(daArc2.getCenterX() - daArc2.getRadiusX()/1.8);
         v.setY(daArc2.getCenterY() - daArc2.getRadiusY()/4);
         v.setManaged(false);
         Text v2 = new Text("AGGREGATE\nDEVICE HYGIENE");
         v2.setFont(Font.font("Ariel", FontWeight.EXTRA_BOLD, 20));
-        v2.setFill(Color.SKYBLUE);
+        v2.setFill(Color.web("0x48c4f2"))
+        ;
         v2.setTextAlignment(TextAlignment.CENTER);
         v2.setTranslateX(daArc2.getCenterX() - daArc2.getRadiusX()/1.5);
         v2.setTranslateY(daArc2.getCenterY() + daArc2.getRadiusY()/8);
         v2.setManaged(false);
 
         aggregateHygiene.getChildren().addAll(dhArc1, dhArc2, v, v2);
-
-        Text g1 = new Text("LAST DATE THREAT BLOCKED:\n09/10/2020");
+        VBox g = new VBox();
+        Text g1 = new Text("LAST DATE THREAT BLOCKED:");
+        Text g2 = new Text("09/10/2020");
+        g.getChildren().addAll(g1, g2);
         g1.setFont(Font.font("Ariel", FontWeight.EXTRA_BOLD, 30));
         g1.setFill(Color.web("0x48C4F2"));
         g1.setTextAlignment(TextAlignment.CENTER);
-        g1.setTranslateY(150);
-        g1.setTranslateX(10);
-        g1.setManaged(false);
-        lastThreatBlocked.getChildren().addAll(g1);
+//        g1.setTranslateY(150);
+//        g1.setTranslateX(10);
+//        g1.setManaged(false);
+        g2.setFont(Font.font("Ariel", FontWeight.EXTRA_BOLD, 30));
+        g2.setFill(Color.WHITE);
+        g2.setTextAlignment(TextAlignment.CENTER);
+        g.setAlignment(Pos.CENTER);
+        g.setPadding(new Insets(10, 10, 10, 10));
+//        g2.setTranslateY(190);
+//        g2.setTranslateX(10);
+//        g2.setManaged(false);
+        lastThreatBlocked.getChildren().addAll(g);
     }
 
     public static void main(String[] args) {

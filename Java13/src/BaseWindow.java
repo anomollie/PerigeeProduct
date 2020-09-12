@@ -1,6 +1,7 @@
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.VPos;
+import javafx.scene.Scene;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
@@ -9,7 +10,7 @@ import java.io.FileNotFoundException;
 
 public class BaseWindow extends GridPane {
 
-    public BaseWindow() throws FileNotFoundException {
+    public BaseWindow(Stage stage, Scene s) throws FileNotFoundException {
         this.setWidth(1280);
         this.setHeight(720);
         this.setHgap(10);
@@ -38,7 +39,7 @@ public class BaseWindow extends GridPane {
         GridPane.setHalignment(leftMid, HPos.LEFT);
         GridPane.setValignment(leftMid, VPos.TOP);
         GridPane.setValignment(leftBot, VPos.BOTTOM);
-        topBar.addTextField();
+        topBar.addTextField(stage, s);
         leftMid.makeLeftMid();
         rightMid.makeRightMid();
         midMid.makeMidMid();

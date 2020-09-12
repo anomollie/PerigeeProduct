@@ -52,8 +52,9 @@ public class InfoWindow extends GridPane{
 //        }
     }
 
-    public void addTextField() throws FileNotFoundException {
+    public void addTextField(Stage stage, Scene s) throws FileNotFoundException {
         CustomTextField t = new CustomTextField();
+        t.setDisable(true);
         Glyph g = new Glyph("FontAwesome", "SEARCH");
         t.setLeft(g);
 
@@ -64,6 +65,8 @@ public class InfoWindow extends GridPane{
         t.setId("ctf");
         t.setStyle("-fx-text-fill: #262262");
         t.setStyle("-fx-prompt-text-fill: #262262;");
+        t.setStyle("-fx-opacity: 1.0");
+        g.setStyle("-fx-opacity: 1.0");
         HBox h = new HBox();
         HBox h2 = new HBox();
         HBox h3 = new HBox();
@@ -74,6 +77,7 @@ public class InfoWindow extends GridPane{
 //        Ellipse r = new Ellipse(0, 0, 120.5, 62.2);
         Image i = new Image(new FileInputStream("Java13\\src\\Picture1.png"));
         ImageView iv = new ImageView(i);
+        iv.setOnMouseClicked(e -> stage.setScene(s));
         iv.setFitWidth(i.getWidth()*.7);
         iv.setFitHeight(i.getHeight()*.7);
 //        r.setTranslateY(6.5);
