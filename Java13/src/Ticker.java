@@ -133,25 +133,36 @@ public class Ticker extends BorderPane {
     }
     private StackPane makeCenter(String priority) {
         StackPane text = new StackPane();
-        Text t = new Text();
-        t.setUnderline(true);
+        Text t = new Text("PRIORITY:");
+        t.setUnderline(false);
         t.setFont(Font.font("Ariel", FontWeight.BOLD, 30));
         t.setFill(Color.web("0x48C4F2"));
         Text t2 = new Text();
         t2.setFont(Font.font("Ariel", FontWeight.SEMI_BOLD, 20));
         t2.setFill(Color.WHITE);
         t2.setWrappingWidth(this.getPrefWidth()*.6);
+        HBox h2 = new HBox();
+        h2.setMaxSize(300, 300);
+        h2.setAlignment(Pos.CENTER);
+        Text te = new Text();
+        te.setFont(Font.font("Ariel", FontWeight.BOLD, 30));
+        te.setTranslateY(-60);
+        te.setUnderline(true);
+        h2.getChildren().addAll(t, te);
         switch (priority) {
             case ("MED"):
-                t.setText("PRIORITY: MEDIUM");
+                te.setText("MEDIUM");
+                te.setFill(Color.web("0xe0c887"));
                 t2.setText("Identified CVE 2018-6692. Recommend switching network from high-priority assets.");
                 break;
             case ("LOW"):
-                t.setText("PRIORITY: LOW");
+                te.setText("LOW");
+                te.setFill(Color.LIMEGREEN);
                 t2.setText("Turn on \"Secure data back-up & restore mechanism to increase device hygiene\"");
                 break;
             case ("HIGH"):
-                t.setText("PRIORITY: HIGH");
+                te.setText("HIGH");
+                te.setFill(Color.RED);
                 t2.setText("Unauthorized change request");
                 break;
         }
@@ -161,8 +172,10 @@ public class Ticker extends BorderPane {
         t.setTranslateY(-60);
         t.setTranslateX(-10);
         t2.setTranslateY(50);
+
+
 //        text.setSpacing(25);
-        text.getChildren().add(t);
+        text.getChildren().add(h2);
         text.getChildren().add(t2);
         text.setTranslateY(-37);
         HBox h = new HBox();
