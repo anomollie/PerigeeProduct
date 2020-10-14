@@ -1,0 +1,56 @@
+.root {
+    -fx-text-fill: white;
+}
+.ctf {
+    -fx-text-fill: white;
+}
+.chart-horizontal-grid-lines {
+    -fx-stroke: transparent;
+}
+.chart-vertical-grid-lines {
+    -fx-stroke: transparent;
+}
+.chart-plot-background {
+    -fx-background-color: transparent;
+}
+.axis:top {
+    -fx-border-color: transparent;
+}
+.axis:left {
+    -fx-stroke-color: #48c4f2;
+}
+.axis:right {
+    -fx-border-color: transparent;
+    -fx-stroke: transparent;
+}
+.axis:bottom {
+    -fx-stroke-color: #48c4f2;
+    -fx-font-weight: normal;
+}
+.chart-title {
+    -fx-text-fill: #48c4f2;
+    -fx-font-weight: 800;
+    -fx-font-size: 25;
+}
+.axis-label {
+    -fx-text-fill: #48c4f2;
+}
+.default-color0.chart-series-line {
+    -fx-stroke: limegreen;
+    -fx-stroke-width: 3px;
+}
+
+.button {
+    -fx-max-width: 20px;
+    -fx-max-height: 20px;
+    -fx-background-color: #262626;
+    -fx-background-radius: 0px;
+    -fx-border-width: 1px;
+    -fx-border-color: white;
+    -fx-text-fill: white;
+}
+
+
+.button:hover{
+    -fx-background-color: red;
+}

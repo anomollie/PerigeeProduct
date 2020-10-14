@@ -2,7 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/Java13/Java13.iml" filepath="$PROJECT_DIR$/Java13/Java13.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/PerigeeProduct.iml" filepath="$PROJECT_DIR$/.idea/PerigeeProduct.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Python/Python.iml" filepath="$PROJECT_DIR$/Python/Python.iml" />
     </modules>
   </component>
 </project>
